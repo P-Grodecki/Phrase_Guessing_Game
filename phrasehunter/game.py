@@ -30,14 +30,6 @@ class Game():
     def welcome(self):
         print('-'*50 + '\n       Welcome to the phrase guessing game.\n' + '-'*50)
 
-    def start(self):
-        self.welcome()
-        print(f'Number missed: {self.missed}')
-        self.active_phrase.display(self.guesses)
-        user_guess = self.get_guess()
-        self.guesses.append(user_guess)
-        self.active_phrase.display(self.guesses)
-
     def get_guess(self):
         # Prompt user for their next guess.
         # If not a letter, then re-enter guess.
@@ -52,28 +44,44 @@ class Game():
             else:
                 print('Guess must be a single letter only. Try again.')
 
-            
+    def start(self):
+        self.welcome()
+        continue_play = True
+        matched_phrase = False
+        while continue_play:
+            print(f'Number missed: {self.missed}')
+            self.active_phrase.display(self.guesses)
+            user_guess = self.get_guess()
+            self.guesses.append(user_guess)
+            if not self.active_phrase.check_guess(user_guess):
+                self.missed += 1
 
-    
-    
-    
-    # def show_game(self):
-    #     # This method will show the game
-    #     pass
+            if self.missed > 5:
+                continue_play = False
+                matched_phrase = False
+                break
+            if self.active_phrase.check_complete(self.guesses):
+                continue_play = False
+                matched_phrase = True
+                break
+            else:
+                continue_play = True
+                matched_phrase = False
+        
+        self.game_over(matched_phrase)
 
-    # def check_game_over(self):
-    #     # This method will check if the game is over
-    #     pass
-
-    # def user_interaction(self):
-    #     # This method will handle user interactions
-    #     pass
+    def game_over(self, matched):
+        if matched:
+            self.active_phrase.display(self.guesses)
+            print('Congrats - You won!')
+        else:
+            print(f'Oh no, you did not guess the phrase. Game Over.\nThe phrase was:\n{self.active_phrase.phrase}')
 
 
 if __name__=='__main__':
     the_game = Game()
     #the_game.create_phrases()
     #phrase_list = the_game.create_phrases()
-    print(the_game.the_phrase)
-    print(the_game.phrases[1].phrase)
+    #print(the_game.the_phrase)
+    #print(the_game.phrases[1].phrase)
     #print(phrase_list[3].phrase)

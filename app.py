@@ -9,6 +9,15 @@ def print_phrase(phrase_object):
 
 # Create your Dunder Main statement.
 if __name__=='__main__':
+    while True:
+        the_game = game.Game()
+        the_game.start()
+        play_again = input("The game has ended. Type 'y' to play again. >>  ")
+        if play_again.upper() != 'Y':
+            print('Thanks for playing. Goodbye!')
+            break
+        else:
+            the_game = None
     """     # Inside Dunder Main:
     ## Create an instance of your Game class
     the_game = game.Game()
@@ -32,7 +41,6 @@ if __name__=='__main__':
     the_game.active_phrase.display(user_guesses)
     ## Start your game by calling the instance method that starts the game loop """
 
-    the_game = game.Game()
-    the_game.start()
+
     #print(f'\nThe Active Phrase: {the_game.active_phrase.phrase}')
     #user_guesses = ['A', 'C', 'W', 'G', 'H', 'O', 'L']
