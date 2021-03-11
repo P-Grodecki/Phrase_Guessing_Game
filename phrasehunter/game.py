@@ -10,6 +10,7 @@ else:
 class Game():
     #This is the game class which will manage the functioning of the game.    
     def __init__(self):
+        print('initialize me')
         self.missed = 0
         self.phrases = self.create_phrases()
         self.active_phrase = self.get_random_phrase()
@@ -20,7 +21,7 @@ class Game():
         phrase_options.append(phrase.Phrase("My name is Patrick"))
         phrase_options.append(phrase.Phrase("Yellow is the color of my house"))
         phrase_options.append(phrase.Phrase("This is an example phrase"))
-        phrase_options.append(phrase.Phrase("The quick red fox jumped over the lazy brown dog"))
+        phrase_options.append(phrase.Phrase("The quick red fox jumps over the lazy brown dogs"))
         phrase_options.append(phrase.Phrase("Jake cracked the safe"))
         return phrase_options
 
@@ -45,30 +46,41 @@ class Game():
                 print('Guess must be a single letter only. Try again.')
 
     def start(self):
-        self.welcome()
-        continue_play = True
-        matched_phrase = False
-        while continue_play:
-            print(f'Number missed: {self.missed}')
-            self.active_phrase.display(self.guesses)
-            user_guess = self.get_guess()
-            self.guesses.append(user_guess)
-            if not self.active_phrase.check_guess(user_guess):
-                self.missed += 1
+        # Start the game.
+        # Game will repeat until user wants to quit.
+        while True:
+            self.welcome()
+            continue_play = True
+            matched_phrase = False
+            while continue_play:
+                # Player will continue to guess letters until they guess the phrase or 
+                # they guess five incorrect letters.
+                print(f'Number missed: {self.missed}/5')
+                self.active_phrase.display(self.guesses)
+                user_guess = self.get_guess()
+                self.guesses.append(user_guess)
+                if not self.active_phrase.check_guess(user_guess):
+                    self.missed += 1
+                if self.missed >= 5:
+                    continue_play = False
+                    matched_phrase = False
+                    break
+                if self.active_phrase.check_complete(self.guesses):
+                    continue_play = False
+                    matched_phrase = True
+                    break
+                else:
+                    continue_play = True
+                    matched_phrase = False
+            
+            self.game_over(matched_phrase)
 
-            if self.missed > 5:
-                continue_play = False
-                matched_phrase = False
-                break
-            if self.active_phrase.check_complete(self.guesses):
-                continue_play = False
-                matched_phrase = True
+            play_again = input("The game has ended. Type 'y' to play again. >>  ")
+            if play_again.upper() != 'Y':
+                print('Thanks for playing. Goodbye!')
                 break
             else:
-                continue_play = True
-                matched_phrase = False
-        
-        self.game_over(matched_phrase)
+                self.__init__()
 
     def game_over(self, matched):
         if matched:
@@ -80,8 +92,3 @@ class Game():
 
 if __name__=='__main__':
     the_game = Game()
-    #the_game.create_phrases()
-    #phrase_list = the_game.create_phrases()
-    #print(the_game.the_phrase)
-    #print(the_game.phrases[1].phrase)
-    #print(phrase_list[3].phrase)
