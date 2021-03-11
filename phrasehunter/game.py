@@ -10,10 +10,10 @@ else:
 class Game():
     #This is the game class which will manage the functioning of the game.    
     def __init__(self):
-        print('initialize me')
         self.missed = 0
         self.phrases = self.create_phrases()
-        self.active_phrase = self.get_random_phrase()
+        #self.active_phrase = self.get_random_phrase()
+        self.active_phrase = None
         self.guesses = []
 
     def create_phrases(self):
@@ -29,7 +29,7 @@ class Game():
         return random.choice(self.phrases)
     
     def welcome(self):
-        print('-'*50 + '\n       Welcome to the phrase guessing game.\n' + '-'*50)
+        print('-'*50 + '\n       Welcome To The Phrase Guessing Game.\n' + '-'*50)
 
     def get_guess(self):
         # Prompt user for their next guess.
@@ -50,6 +50,7 @@ class Game():
         # Game will repeat until user wants to quit.
         while True:
             self.welcome()
+            self.active_phrase = self.get_random_phrase()
             continue_play = True
             matched_phrase = False
             while continue_play:

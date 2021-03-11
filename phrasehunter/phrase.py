@@ -2,10 +2,10 @@
 class Phrase():
 
     def __init__(self, phrase):
-        self.phrase = phrase.upper()
+        self.phrase = phrase.lower()
 
     def display(self, guesses):
-        guesses = [letter.upper() for letter in guesses]
+        guesses = [letter.lower() for letter in guesses]
         for letter in self.phrase:
             if letter in guesses:
                 print(f'{letter}', end=" ")
@@ -16,12 +16,11 @@ class Phrase():
         print("",end='\n')
 
     def check_guess(self, guess):
-        return guess.upper() in self.phrase
+        return guess.lower() in self.phrase
 
     def check_complete(self, guesses):
-        guesses = [letter.upper() for letter in guesses] 
+        guesses = [letter.lower() for letter in guesses] 
         no_space_phrase = self.phrase.replace(" ",'')
-        #import pdb; pdb.set_trace()
         if set(no_space_phrase).intersection(set(guesses)) == set(no_space_phrase):
             return True
         else:
